@@ -1,0 +1,43 @@
+var cookieShield = {
+    cookieShieldId: "cookieShield",
+    shieldImages: [
+        "https://cdn1.iconfinder.com/data/icons/arms-and-armor-color/300/17-512.png"
+    ],
+    currentShield: 0, autoCheckShimmeringVeil: 1,
+    init: function() {
+        if (this.autoCheckShimmeringVeil != 1) return false;
+        setTimeout(() => { this.checkShimmeringVeil(); }, 1000);        
+    },
+    checkShimmeringVeil: function() {
+        if (!Game.Has('Shimmering veil')) return false;
+        if (Game.Has('Shimmering veil [on]')) {
+            this.destroy();
+            return false;
+        }
+        if (Game.Has('Shimmering veil [off]')) {
+            this.create();
+            this.init();
+            return false;
+        }
+    },
+    create: function() {
+        var cookieShield = document.createElement('div');
+        cookieShield.id = this.cookieShieldId;
+        Object.assign(cookieShield.style, {
+            zIndex: 11000,
+            position: "absolute",
+            left: "calc(50% - 130px)",
+            top: "calc(40% - 130px)",
+            width: "260px",
+            height: "260px",
+            backgroundImage: "url('" + this.shieldImages[this.currentShield] + "')",
+            backgroundSize: "cover"
+        });
+        document.getElementById("sectionLeft").appendChild(cookieShield);
+    },
+    destroy: function() {
+        var cookieShield = document.getElementById(this.cookieShieldId);
+        cookieShield.parentNode.removeChild(cookieShield);
+    }
+}
+cookieShield.init()
